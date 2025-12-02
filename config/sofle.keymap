@@ -14,6 +14,38 @@
 #define LOWER 1
 #define RAISE 2
 #define ADJUST 3
+oled {
+    // Asegúrate de que los pines coinciden con tu conexión
+    // Por ejemplo, si usas I2C
+    pins {
+        sda = <PIN_SDA>;
+        scl = <PIN_SCL>;
+    };
+
+    // Habilita el soporte para OLED
+    enabled = <true>;
+};
+layer {
+    // Define la función que se ejecutará cuando cambies de capa
+    on_layer_change = <handle_oled_display>;
+};
+
+// Define la función para manejar el display
+function handle_oled_display {
+    // Limpia la pantalla y actualiza la información
+    oled_display_clear();
+    oled_display_print("Capa: ");
+    // Muestra el número de capa actual
+    oled_display_print(layer_num());
+
+    // Muestra el estado de las mayúsculas y bloque numérico
+    if (caps_lock_is_on()) {
+        oled_display_print("Mayús");
+    }
+    if (num_lock_is_on()) {
+        oled_display_print("Num");
+    }
+};
 
 / {
 
